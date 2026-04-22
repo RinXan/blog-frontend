@@ -13,3 +13,6 @@ export const getArticles = async (): Promise<Article[]> => {
     return data.items;
 };
 
+export const getArticleById = async (id: number): Promise<Article> => {
+    return api(`/articles/${id}`);
+};

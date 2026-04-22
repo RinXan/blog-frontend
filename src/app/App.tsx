@@ -1,7 +1,7 @@
-import ArticlesPage from "../pages/articles/ArticlesPage"
+import { AppRouter } from "./routes/AppRouter"
 
 function App() {
-  return <ArticlesPage />
+  return <AppRouter />
 }
 
 export default App
