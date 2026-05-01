@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import type { Article } from "../../entities/article/model/types";
-import { getArticleById } from "../../entities/article/api/articleApi";
+import { deleteArticle, getArticleById } from "../../entities/article/api/articleApi";
 import { CommentForm } from "../../features/comment/CommentForm";
 import { CommentList } from "../../features/comment/CommentList";
+import { getUserFromToken } from "../../shared/lib/jwt";
 
 export default function ArticleDetailsPage() {
     const { id } = useParams();
     const [article, setArticle] = useState<Article | null>(null);
     const [reload, setReload] = useState(0);
+    const user = getUserFromToken();
+    const navigate = useNavigate();
     
     useEffect(() => {
         if (!id) return;
@@ -18,7 +21,20 @@ export default function ArticleDetailsPage() {
         .catch(console.error);
     }, [id]);
 
+    const handleDelete = async (id: number) => {
+        if (!confirm("Are you shure?")) return;
+
+        try {
+            await deleteArticle(id);
+            navigate("/");
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
     if (!article) return <div>Loading...</div>
+    
+    const isAuthor = user && article.author.id === user.id;
 
     return (
         <div>
@@ -29,6 +45,13 @@ export default function ArticleDetailsPage() {
             </p>
 
             <p>{article.content}</p>
+
+            {isAuthor && (
+                <div>
+                    <button onClick={() => navigate(`/articles/edit/${article.id}`)}>Edit</button>
+                    <button onClick={() => handleDelete(article.id)}>Delete</button>
+                </div>
+            )}
 
             <CommentForm
                 articleId={article.id}

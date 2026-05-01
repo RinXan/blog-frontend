@@ -16,3 +16,9 @@ export const getArticles = async (): Promise<Article[]> => {
 export const getArticleById = async (id: number): Promise<Article> => {
     return api(`/articles/${id}`);
 };
+
+export const deleteArticle = async (id: number) => {
+    return api(`/articles/${id}`, {
+        method: "DELETE",
+    });
+};

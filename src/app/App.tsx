@@ -1,7 +1,13 @@
+import { Navbar } from "../shared/ui/navbar"
 import { AppRouter } from "./routes/AppRouter"
 
 function App() {
-  return <AppRouter />
+  return (
+    <div>
+      <Navbar />
+      <AppRouter />
+    </div>
+  )
 }
 
 export default App
