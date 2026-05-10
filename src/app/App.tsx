@@ -1,4 +1,4 @@
-import { Navbar } from "../shared/ui/navbar"
+import { Navbar } from "../shared/ui/Navbar"
 import { AppRouter } from "./routes/AppRouter"
 
 function App() {

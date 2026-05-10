@@ -22,3 +22,30 @@ export const deleteArticle = async (id: number) => {
         method: "DELETE",
     });
 };
+
+export const createArticle = async (data: {
+    title: string;
+    content: string;
+    imageUrl?: string;
+    publishedAt: string;
+}) => {
+    return api("/articles", {
+        method: "POST",
+        body: JSON.stringify(data),
+    });
+};
+
+export const updateArticle = async (
+    id: number,
+    data: {
+        title: string;
+        content: string;
+        imageUrl?: string;
+        publishedAt?: string;
+    }
+) => {
+    return api(`/articles/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(data),
+    });
+};

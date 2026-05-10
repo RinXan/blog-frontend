@@ -21,6 +21,8 @@ export const api = async (url: string, options: RequestInit = {}) => {
   if (!res.ok) {
     throw new Error("API error");
   }
+  
+  const text = await res.text();
 
-  return res.json();
+  return text ? JSON.parse(text) : null;
 };

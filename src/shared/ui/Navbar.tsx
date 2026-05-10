@@ -16,6 +16,7 @@ export const Navbar = () => {
             <Link to="/">Home</Link>
             {user ? (
                 <>
+                    <Link to="/create-article">Create</Link>
                     <span>👤 {user.userName}</span>
                     <button onClick={handleLogout}>Logout</button>
                 </>

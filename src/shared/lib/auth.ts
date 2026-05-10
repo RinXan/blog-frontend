@@ -10,4 +10,8 @@ export const getToken = () => {
 
 export const removeToken = () => {
     localStorage.removeItem(TOKEN_KEY);
+};
+
+export const isAuthenticated = () => {
+    return !!localStorage.getItem(TOKEN_KEY);
 }
