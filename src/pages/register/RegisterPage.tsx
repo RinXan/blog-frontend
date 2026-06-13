@@ -1,25 +1,28 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
 
 import Input from "../../shared/ui/Input";
 import Button from "../../shared/ui/Button";
 
-import { login } from "../../entities/user/api/authApi";
-import { setToken } from "../../shared/lib/auth";
-import { getUserFromToken } from "../../shared/lib/jwt";
-import { useAuth } from "../../app/providers/AuthProvider";
+import { register } from "../../entities/user/api/authApi";
+import toast from "react-hot-toast";
 import Spinner from "../../shared/ui/Spinner";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const navigate = useNavigate();
-  const { setUser } = useAuth();
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const [error, setError] = useState("");
+  const [userName, setUserName] =
+    useState("");
+
+  const [email, setEmail] =
+    useState("");
+
+  const [password, setPassword] =
+    useState("");
+
+  const [error, setError] =
+    useState("");
 
   const handleSubmit = async (
     e: React.FormEvent
@@ -29,20 +32,19 @@ export default function LoginPage() {
     try {
       setLoading(true);
 
-      const data = await login({
+      await register({
+        userName,
         email,
         password,
       });
 
-      setToken(data.token);
-      setUser(getUserFromToken());
-
-      toast.success("Welcome back!");
-
-      navigate("/");
+      toast.success("Account created successfully!");
+      navigate("/login");
     } catch {
-      setError("Invalid email or password");
-      toast.error("Invalid email or password");
+      toast.error("Registration failed");
+      setError(
+        "Registration failed"
+      );
     } finally {
       setLoading(false);
     }
@@ -52,13 +54,21 @@ export default function LoginPage() {
     <div className="flex justify-center">
       <div className="w-full max-w-md bg-white rounded-xl shadow p-8">
         <h1 className="text-3xl font-bold text-center mb-6">
-          Login
+          Register
         </h1>
 
         <form
           onSubmit={handleSubmit}
           className="space-y-4"
         >
+          <Input
+            placeholder="Username"
+            value={userName}
+            onChange={e =>
+              setUserName(e.target.value)
+            }
+          />
+
           <Input
             type="email"
             placeholder="Email"
@@ -84,17 +94,17 @@ export default function LoginPage() {
           )}
 
           <Button type="submit" disabled={loading}>
-            {loading ? <Spinner /> : "Login"}
+            {loading ? <Spinner /> : "Register"}
           </Button>
         </form>
 
         <p className="mt-4 text-center text-gray-600">
-          No account?{" "}
+          Already have an account?{" "}
           <Link
-            to="/register"
+            to="/login"
             className="text-blue-600"
           >
-            Register
+            Login
           </Link>
         </p>
       </div>

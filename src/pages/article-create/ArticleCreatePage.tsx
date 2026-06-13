@@ -1,27 +1,35 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createArticle } from "../../entities/article/api/articleApi";
+import toast from "react-hot-toast";
+import Spinner from "../../shared/ui/Spinner";
 
 export default function ArticleCreatePage() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [imageUrl, setImageUrl] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
     const handleSubmit = async () => {
         if (!title.trim() || !content.trim()) {
-            alert("Title and content required!");
+            toast.error("Title and content required!");
             return;
         }
 
         try {
+            setLoading(true);
+
             const article = await createArticle({title, content, imageUrl, publishedAt: new Date().toISOString()});
             
+            toast.success("Article created!");
             navigate(`/articles/${article.id}`);
         } catch (e) {
             console.error(e);
-            alert("Failed to create article");
+            toast.error("Failed to create article");
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -53,7 +61,7 @@ export default function ArticleCreatePage() {
 
             <br />
 
-            <button onClick={handleSubmit}>Create</button>
+            <button onClick={handleSubmit} disabled={loading}>{loading ? <Spinner /> : "Create article"}</button>
         </div>
     )
 }

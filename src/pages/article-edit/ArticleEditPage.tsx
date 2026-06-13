@@ -6,6 +6,8 @@ import {
   updateArticle,
 } from "../../entities/article/api/articleApi";
 import { getUserFromToken } from "../../shared/lib/jwt";
+import toast from "react-hot-toast";
+import Spinner from "../../shared/ui/Spinner";
 
 export default function ArticleEditPage() {
   const { id } = useParams();
@@ -15,6 +17,7 @@ export default function ArticleEditPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -36,6 +39,8 @@ export default function ArticleEditPage() {
     if (!id) return;
 
     try {
+      setLoading(true);
+
       await updateArticle(Number(id), {
         title,
         content,
@@ -43,10 +48,13 @@ export default function ArticleEditPage() {
         publishedAt: new Date().toISOString(),
       });
 
+      toast.success("Article updated!");
       navigate(`/articles/${id}`);
     } catch (e) {
       console.error(e);
-      alert("Failed to update article");
+      toast.error("Failed to update article");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -75,8 +83,8 @@ export default function ArticleEditPage() {
 
       <br />
 
-      <button onClick={handleSubmit}>
-        Save
+      <button onClick={handleSubmit} disabled={loading}>
+        {loading ? <Spinner /> : "Save changes"}
       </button>
     </div>
   );

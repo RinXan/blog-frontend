@@ -1,11 +1,12 @@
-import { Navbar } from "../shared/ui/Navbar"
+import Layout from "../widgets/layout/Layout"
 import { AppRouter } from "./routes/AppRouter"
 
 function App() {
   return (
     <div>
-      <Navbar />
-      <AppRouter />
+      <Layout>
+        <AppRouter />
+      </Layout>
     </div>
   )
 }

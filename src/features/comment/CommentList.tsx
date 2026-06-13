@@ -12,15 +12,32 @@ export const CommentList = ({ articleId }: { articleId: number }) => {
     }, [articleId]);
 
     return (
-        <div>
-            <h3>Comments</h3>
+        <div className="mt-10">
+            <h2 className="text-2xl font-bold mb-4">
+                Comments
+            </h2>
 
-            {comments.map(c => (
-                <div key={c.id}>
-                    <b>{c.author.userName}</b>
-                    <p>{c.text}</p>
+            <div className="space-y-4">
+                {comments.map(comment => (
+                <div
+                    key={comment.id}
+                    className="
+                    bg-white
+                    rounded-lg
+                    shadow
+                    p-4
+                    "
+                >
+                    <div className="font-semibold">
+                    {comment.author.userName}
+                    </div>
+
+                    <div className="text-gray-700 mt-2">
+                    {comment.text}
+                    </div>
                 </div>
-            ))}
+                ))}
+            </div>
         </div>
     )
 }

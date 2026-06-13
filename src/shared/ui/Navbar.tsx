@@ -1,28 +1,62 @@
-import { Link, useNavigate } from "react-router-dom";
-import { getUserFromToken } from "../lib/jwt"
-import { removeToken } from "../lib/auth";
+import { Link } from "react-router-dom";
 
-export const Navbar = () => {
-    const user = getUserFromToken();
-    const navigate = useNavigate();
+import { removeToken } from "../../shared/lib/auth";
+import { useAuth } from "../../app/providers/AuthProvider";
 
-    const handleLogout = () => {
-        removeToken();
-        navigate("/login");
-    };
+export default function Navbar() {
+  const {user, setUser} = useAuth();
 
-    return (
-        <div style={{display: "flex", gap: "10px", marginBottom: "20px"}}>
-            <Link to="/">Home</Link>
-            {user ? (
-                <>
-                    <Link to="/create-article">Create</Link>
-                    <span>👤 {user.userName}</span>
-                    <button onClick={handleLogout}>Logout</button>
-                </>
-            ) : (
-                <Link to="/login">Login</Link>
-            )}
-        </div>
-    )
+  const handleLogout = () => {
+    removeToken();
+    setUser(null);
+  };
+
+  return (
+    <header className="bg-white shadow">
+      <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between">
+        <Link
+          to="/"
+          className="text-2xl font-bold text-blue-600"
+        >
+          BlogApp
+        </Link>
+
+        <nav className="flex items-center gap-4">
+          {user && (
+            <Link
+              to="/create-article"
+              className="text-gray-700 hover:text-blue-600"
+            >
+              Create
+            </Link>
+          )}
+
+          {user ? (
+            <>
+              <span className="text-gray-700">
+                👤 {user.userName}
+              </span>
+
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 text-white px-3 py-1 rounded"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login">
+                Login
+              </Link>
+
+              <Link to="/register">
+                Register
+              </Link>
+            </>
+          )}
+        </nav>
+      </div>
+    </header>
+  );
 }

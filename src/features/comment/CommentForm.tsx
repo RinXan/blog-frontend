@@ -30,13 +30,33 @@ export const CommentForm = ({ articleId, onSuccess }: {
     };
 
     return (
-        <div>
+        <div className="mt-8">
             <textarea
-                value={text} 
-                onChange={e => setText(e.target.value)} 
+                value={text}
+                onChange={e => setText(e.target.value)}
+                placeholder="Write a comment..."
+                className="
+                w-full
+                border
+                rounded-lg
+                p-3
+                min-h-[120px]
+                "
             />
-            <br />
-            <button onClick={handleSubmit}>Add comment</button>
+
+            <button
+                onClick={handleSubmit}
+                className="
+                mt-3
+                bg-blue-600
+                text-white
+                px-4
+                py-2
+                rounded-lg
+                "
+            >
+                Add comment
+            </button>
         </div>
     );
 };
